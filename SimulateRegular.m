@@ -135,6 +135,7 @@ switch init
     case '02'
         WF = WF02;
 end
+WF = U*WF;
 % probabilities
 switch N
     case 2
@@ -212,15 +213,15 @@ function arr = OperatorGrid(w, T1, T2, N1, N2, ...
 
     arr1 = [];
     arr2 = [];
-    Nw = floor(w/step);    % pulse width (in grs)
-    NT1 = floor(T1/step) - Nw; % distance b/w pulses on Q1 (in grs)
-    NT2 = floor(T2/step) - Nw; % distance b/w pulses on Q2 (in grs)
+    Nw = ceil(w/step);    % pulse width (in grs)
+    NT1 = ceil(T1/step) - Nw; % distance b/w pulses on Q1 (in grs)
+    NT2 = ceil(T2/step) - Nw; % distance b/w pulses on Q2 (in grs)
     sp = ones(1,Nw);       % array for +1 pulse
     sm = ones(1,Nw)*(-1);  % array for -1 pulse
     s0_1un = zeros(1,NT1); % array for distance b/w uni pulses on Q1
     s0_2un = zeros(1,NT2); % array for distance b/w uni pulses on Q2
-    s0_1bip = zeros(1,floor((NT1 - Nw)/2)); % array for distance b/w bip pulses on Q1
-    s0_2bip = zeros(1,floor((NT2 - Nw)/2)); % array for distance b/w bip pulses on Q2
+    s0_1bip = zeros(1,ceil((NT1 - Nw)/2)); % array for distance b/w bip pulses on Q1
+    s0_2bip = zeros(1,ceil((NT2 - Nw)/2)); % array for distance b/w bip pulses on Q2
     % phase between pulses (in grs)
     if phi > 0
         phi_arr = zeros(1,phi);
@@ -253,12 +254,20 @@ function arr = OperatorGrid(w, T1, T2, N1, N2, ...
             arr2 = [arr2 s0_2bip];
         end
     end
-    % adding the last pulse
+    % adding the last pulse (or a pair of pulses)
     if N1 > 0
         arr1 = [arr1 sp];
+        if bip1 == 1
+            arr1 = [arr1 s0_1bip];
+            arr1 = [arr1 sm];    
+        end
     end
     if N2 > 0
         arr2 = [arr2 sp];
+        if bip2 == 1
+            arr2 = [arr2 s0_2bip];
+            arr2 = [arr2 sm];    
+        end
     end
     % wait time after pulses (in grs)
     if waitq1 > 0

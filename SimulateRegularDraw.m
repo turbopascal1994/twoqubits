@@ -108,7 +108,6 @@ switch init
     case '02'
         WF = WF02;
 end
-
 Probs00 = zeros(1,length(PulseString));
 Probs10 = zeros(1,length(PulseString));
 Probs01 = zeros(1,length(PulseString));
@@ -191,12 +190,12 @@ plot(tt,Probs11,'k','LineWidth',LW);
 hold off
 legend('01','20','02','11','Location','southeast')
 
-disp(['00: ', num2str(Probs00(end))]);
-disp(['10: ', num2str(Probs10(end))]);
-disp(['01: ', num2str(Probs01(end))]);
-disp(['20: ', num2str(Probs20(end))]);
-disp(['02: ', num2str(Probs02(end))]);
-disp(['11: ', num2str(Probs11(end))]);
+%disp(['00: ', num2str(Probs00(end))]);
+%disp(['10: ', num2str(Probs10(end))]);
+%disp(['01: ', num2str(Probs01(end))]);
+%disp(['20: ', num2str(Probs20(end))]);
+%disp(['02: ', num2str(Probs02(end))]);
+%disp(['11: ', num2str(Probs11(end))]);
 
 function arr = OperatorGrid(w, T1, T2, N1, N2, ...
         phi, waitq1, waitq2, bip1, bip2, step)
@@ -209,9 +208,9 @@ function arr = OperatorGrid(w, T1, T2, N1, N2, ...
     % creating variables
     arr1 = [];
     arr2 = [];
-    Nw = floor(w/step);    % pulse width (in grs)
-    NT1 = floor(T1/step) - Nw; % distance b/w pulses on Q1 (in grs)
-    NT2 = floor(T2/step) - Nw; % distance b/w pulses on Q2 (in grs)
+    Nw = ceil(w/step);    % pulse width (in grs)
+    NT1 = ceil(T1/step) - Nw; % distance b/w pulses on Q1 (in grs)
+    NT2 = ceil(T2/step) - Nw; % distance b/w pulses on Q2 (in grs)
     sp = ones(1,Nw);       % array for +1 pulse
     sm = ones(1,Nw)*(-1);  % array for -1 pulse
     s0_1un = zeros(1,NT1); % array for distance b/w uni pulses on Q1
